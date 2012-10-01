@@ -2,46 +2,46 @@ package Main;
 
 import java.util.List;
 
+import twitter4j.TwitterException;
+
 import Matcher.Matching;
 import Query.NELLQuery;
-import Query.QueryClassifier;
 import Twitter.TwitterAgent;
 import User.NELLUser;
-import User.UserClassify;
 
 public class WholeSystem {
-	
-	
-	
-	public static void execute(){
-		
+
+	public static void execute() {
+
 		TwitterAgent ta = new TwitterAgent();
-		
-		List<NELLQuery> querySet = QueryClassifier.loadQuerySet();
-		
-		QueryClassifier.classify(querySet);
-		
-		List<NELLUser> userSet = UserClassify.loadUsers();
-		
-		UserClassify.classify(userSet);
-		
+
+		List<NELLQuery> querySet = NELLQuery.loadQuerySet();
+
+		NELLQuery.classify(querySet);
+
+		List<NELLUser> userSet = NELLUser.loadUsers();
+
+		NELLUser.classify(userSet);
+
 		Matching.match(querySet, userSet);
-		
-		ta.publish(querySet);
-		
-		ta.collect(userSet);
-		
-		
+
+		try {
+			ta.publish(querySet);
+
+			ta.collect(userSet);
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
-	public static void main(String[] args){
-		
+
+	public static void main(String[] args) {
+
 		WholeSystem s = new WholeSystem();
-		
+
 		s.execute();
-		
-		
-		
+
 	}
 
 }

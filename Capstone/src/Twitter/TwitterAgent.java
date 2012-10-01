@@ -57,65 +57,80 @@ public class TwitterAgent {
 
 	}
 
-	public void directMessage() throws TwitterException {
+	public void directMessage(String recipientId, String msg)
+			throws TwitterException {
 
-		String recipientId = "sharqwy";
+		recipientId = "sharqwy";
 
-		String msg = "Hello, this is tianle huang";
+		msg = "Hello, this is tianle huang";
 		DirectMessage message = twitter.sendDirectMessage(recipientId, msg);
 		System.out.println("Direct message successfully sent to "
 				+ message.getRecipientScreenName());
 	}
-	
-	public void getDirect() throws TwitterException{
-		
-		String senderId = "sharqwy";
-		
-		List<DirectMessage> message = twitter.getDirectMessages();
-		
-		for(DirectMessage dm : message){
-			
-			System.out.println("**********************************************");
 
-			System.out.println(dm.getText()+","+dm.getSender().getName());
-			System.out.println("**********************************************");
+	public void getDirect() throws TwitterException {
+
+		// String senderId = "sharqwy";
+
+		List<DirectMessage> message = twitter.getDirectMessages();
+
+		for (DirectMessage dm : message) {
+
+			System.out
+					.println("**********************************************");
+
+			System.out.println(dm.getText() + "," + dm.getSender().getName());
+			System.out
+					.println("**********************************************");
 
 		}
 
-		
 	}
 
 	public void search() throws TwitterException {
 
-		//Query query = new Query("source:twitter4j stuff");
+		// Query query = new Query("source:twitter4j stuff");
 		Query query = new Query("stuff");
 		QueryResult result = twitter.search(query);
 		for (Tweet tweet : result.getTweets()) {
-			System.out.println("**********************************************");
-			
+			System.out
+					.println("**********************************************");
+
 			System.out.println(tweet.getFromUser() + ":" + tweet.getText());
-			
-			
-			System.out.println("**********************************************");
+
+			System.out
+					.println("**********************************************");
 		}
 
 	}
 
-	public void publish(List<NELLQuery> querySets){
-		
-		
-		
-		
+	public void publish(List<NELLQuery> querySet) throws TwitterException {
+
+		System.out.println("********************************************");
+
+		System.out.println("start publish queries");
+		for (NELLQuery q : querySet) {
+
+			for (NELLUser u : q.getUsers()) {
+				String recipientId = u.getName();
+				String msg = q.getQuery();
+
+				// directMessage(recipientId, msg);
+			}
+
+		}
+		System.out.println("finish publish queries");
 	}
-	
-	
-	public void collect(List<NELLUser> userSets){
-		
-		
-		
-		
+
+	public void collect(List<NELLUser> userSet) throws TwitterException {
+		System.out.println("********************************************");
+
+		System.out.println("start collect replies");
+		System.out.println("finish collect replies");
+
+
 	}
-	
+
 	public static void main(String[] args) {
 
 		TwitterAgent r = new TwitterAgent();
@@ -127,10 +142,10 @@ public class TwitterAgent {
 
 			// r.timeline();
 
-			//r.directMessage();
-			
-			//r.search();
-			
+			// r.directMessage();
+
+			// r.search();
+
 			r.getDirect();
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
