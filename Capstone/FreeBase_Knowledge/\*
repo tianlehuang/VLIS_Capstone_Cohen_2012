@@ -1,0 +1,1 @@
+{"status":"400 Bad Request","code":"\/api\/status\/error","transaction_id":"cache;cache02.p01.sjc1:8101;2012-10-15T02:47:40Z;0080","messages":[{"message":"JSON parsing error at line 1, column 19 (position 18): Unknown escape code: \\*.","code":"\/api\/status\/error\/input\/invalid","info":{"field":"query","value":"{\"query\":{\"name\":\"\\*\",\"type\":[]}}"}}]}

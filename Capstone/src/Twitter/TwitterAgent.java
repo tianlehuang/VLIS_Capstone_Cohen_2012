@@ -1,8 +1,10 @@
 package Twitter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.DirectMessage;
+import twitter4j.IDs;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -17,9 +19,32 @@ import User.NELLUser;
 
 public class TwitterAgent {
 
-	public static Twitter twitter;
+	private static TwitterAgent instance = new TwitterAgent();
 
-	public void authorize() {
+	private static Twitter twitter;
+
+	private static User user;
+
+	private TwitterAgent() {
+
+		twitter = authorize();
+
+		try {
+			user = twitter.verifyCredentials();
+
+			// System.out.println("**********" + user.getStatus());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static TwitterAgent getInstance() {
+		return instance;
+	}
+
+	public static Twitter authorize() {
+
+		System.out.println("authorize!");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 				.setOAuthConsumerKey("pU7fedemNqtJLbFI5DUXxQ")
@@ -30,7 +55,7 @@ public class TwitterAgent {
 				.setOAuthAccessTokenSecret(
 						"eQB2QeIRBLs0GmEE8AVwWq9Cp1kASppqziN3HX7aR58");
 		TwitterFactory tf = new TwitterFactory(cb.build());
-		twitter = tf.getInstance();
+		return tf.getInstance();
 
 	}
 
@@ -46,7 +71,7 @@ public class TwitterAgent {
 
 	public void timeline() throws TwitterException {
 
-		User user = twitter.verifyCredentials();
+		// User user = twitter.verifyCredentials();
 		List<Status> statuses = twitter.getHomeTimeline();
 		System.out.println("Showing @" + user.getScreenName()
 				+ "'s home timeline.");
@@ -57,7 +82,7 @@ public class TwitterAgent {
 
 	}
 
-	public void directMessage(String recipientId, String msg)
+	public static void directMessage(String recipientId, String msg)
 			throws TwitterException {
 
 		recipientId = "sharqwy";
@@ -68,7 +93,7 @@ public class TwitterAgent {
 				+ message.getRecipientScreenName());
 	}
 
-	public void getDirect() throws TwitterException {
+	public static void getDirect() throws TwitterException {
 
 		// String senderId = "sharqwy";
 
@@ -104,7 +129,8 @@ public class TwitterAgent {
 
 	}
 
-	public void publish(List<NELLQuery> querySet) throws TwitterException {
+	public static void publish(List<NELLQuery> querySet)
+			throws TwitterException {
 
 		System.out.println("********************************************");
 
@@ -122,20 +148,158 @@ public class TwitterAgent {
 		System.out.println("finish publish queries");
 	}
 
-	public void collect(List<NELLUser> userSet) throws TwitterException {
+	public static void collect(List<NELLUser> userSet) throws TwitterException {
 		System.out.println("********************************************");
 
 		System.out.println("start collect replies");
 		System.out.println("finish collect replies");
 
-
 	}
+
+	public static List<Long> getFollowersIds() {
+
+		int count = 0;
+		List<Long> follows = new ArrayList<Long>();
+		try {
+			long cursor = -1;
+			IDs ids;
+			System.out.println("Listing followers's ids.");
+			do {
+
+				ids = twitter.getFollowersIDs("cmunell", cursor);
+				//ids = twitter.getFollowersIDs(cursor);
+
+				for (long id : ids.getIDs()) {
+					count++;
+					System.out.println(id);
+					follows.add(id);
+				}
+			} while ((cursor = ids.getNextCursor()) != 0);
+			// System.exit(0);
+		} catch (TwitterException te) {
+			te.printStackTrace();
+			System.out.println("Failed to get followers' ids: "
+					+ te.getMessage());
+			// System.exit(-1);
+		}
+
+		System.out.println("the total number of followers is " + count);
+		return follows;
+	}
+	
+	public static String getName(long id){
+		String name = "";
+		try{
+			name = twitter.showUser(id).getScreenName();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return name;
+	}
+
+	public static List<String> retrieveFromAUser(long id) {
+		System.out.println("Retrieving tweets...");
+		List<String> tweets = new ArrayList<String>();
+		try {
+			String user = twitter.showUser(id).getScreenName();
+			System.out.println("The current user is " + user);
+			
+			
+			Query query = new Query("from:" + user);
+			query.setRpp(500);
+			query.setSince("2000-01-01");
+
+			QueryResult result = twitter.search(query);
+
+			System.out.println("Count : " + result.getTweets().size());
+
+			for (Tweet tweet : result.getTweets()) {
+
+				System.out.println("text : " + tweet.getText());
+				tweets.add(tweet.getText());
+
+			}
+
+		} catch (TwitterException e) {
+
+			e.printStackTrace();
+
+		}
+
+		System.out.println("done! ");
+		return tweets;
+	}
+
+	public static void getFollowersTest() {
+		try {
+
+			System.out
+					.println("It has so many followers "
+							+ twitter.getFollowersIDs(user.getScreenName(), 0)
+									.getIDs().length);
+			String out = "";
+
+			// "#clt20"
+			Query query2 = new Query("SmiffSr").since("2010-10-01")
+					.until("2012-10-14").rpp(100);
+			QueryResult result2 = twitter.search(query2);
+			int i = 1;
+			for (Tweet tweet : result2.getTweets()) {
+				System.out.println("<img src='" + tweet.getProfileImageUrl()
+						+ "'>" + "<b>(" + i + ") " + tweet.getFromUser() + "("
+						+ tweet.getCreatedAt() + ")" + "</b>" + " : "
+						+ tweet.getText() + "<br/>");
+				i++;
+			}
+
+			System.out.println("*********************************");
+			// twitter.getUserTimeline();
+			// Getting user id through his screen name
+			User user = twitter.showUser("SmiffSr");
+			
+
+			// Getting another user timeline
+			List<Status> statuses = twitter.getUserTimeline(user.getId());
+			System.out.println("<h2>Showing another user timeline...."
+					+ "</h2><br/><br/>");
+			System.out.println("<h3>Name of the User :<i>"
+					+ user.getName().toString() + "</i></h3><br/><br/>");
+			for (Status status2 : statuses) {
+				System.out.println("<b>" + status2.getUser().getName()
+						+ "</b>:" + status2.getText() + "<br/>");
+			}
+
+			System.out.println("show:  " + out);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void te(){
+		try{
+		//User user = twitter.showUser("TheDailyShow");
+		//User user = twitter.showUser("SteveNash");
+		//User user = twitter.showUser("CNN");
+		//User user = twitter.showUser("FoxNews");
+		//User user = twitter.showUser("KobeBryantNews");
+		User user = twitter.showUser("Cristiano");
+		//User user = twitter.showUser("CNN");
+		System.out.println(user.getId());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 
 	public static void main(String[] args) {
 
-		TwitterAgent r = new TwitterAgent();
+		TwitterAgent r = TwitterAgent.getInstance();
 
-		r.authorize();
+		// r.authorize();
 
 		try {
 			// r.update();
@@ -146,8 +310,16 @@ public class TwitterAgent {
 
 			// r.search();
 
-			r.getDirect();
-		} catch (TwitterException e) {
+			// r.getDirect();
+			// r.timeline();
+			// r.getFollowers();
+			//r.getFollowersIds();
+			
+			//r.retrieveFromAUser(242922283);
+			
+			r.te();
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
