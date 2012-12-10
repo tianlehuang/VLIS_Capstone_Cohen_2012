@@ -51,15 +51,7 @@ public class TwitterAgent {
 
 		System.out.println("authorize!");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-//		cb.setDebugEnabled(true)
-//				.setOAuthConsumerKey("pU7fedemNqtJLbFI5DUXxQ")
-//				.setOAuthConsumerSecret(
-//						"IFCGEYvGTfVrnPqZ9U13BpQiyOXVxXJQZEHq5ww9E")
-//				.setOAuthAccessToken(
-//						"92151054-E6bDzKb6JxhM881kiHTx2sQGOc5NQT02e0ffpHR98")
-//				.setOAuthAccessTokenSecret(
-//						"eQB2QeIRBLs0GmEE8AVwWq9Cp1kASppqziN3HX7aR58");
-		
+
 		cb.setDebugEnabled(true)
 		.setOAuthConsumerKey("kszNJmvwgnLDWtCLgfF8w")
 		.setOAuthConsumerSecret(
