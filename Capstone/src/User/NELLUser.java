@@ -9,16 +9,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import Freebase.FreebaseAgent;
 import Tagger.TaggerAgent;
-
 import Tools.Pair;
 import Twitter.TwitterAgent;
 
@@ -31,6 +30,8 @@ public class NELLUser {
 	public List<String> topics;
 
 	public List<String> replies;
+	
+	public static Set<String> allTopics = new HashSet<String>();
 
 	public String getName() {
 
@@ -75,19 +76,29 @@ public class NELLUser {
 	public static List<Long> loadFollowIds(){
 		List<Long> ids = new ArrayList<Long>();
 		
+	
+		
 		String content = "";
 		String dir = "TestData/";
 		String doc = "idsOfFollowers.txt";
 		File f = new File(dir+doc);
+		int count = 0;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			while(true){
-				
+//				count++;
+//				if(count >30){
+//					break;
+//				}
+//				
 				content = br.readLine();
 				if(content == null){
 					break;
 				}else{
-					ids.add(Long.parseLong(content));
+					Long cid = Long.parseLong(content);
+					//we need to check whether it is empty or not
+					
+					ids.add(cid);
 				}
 				
 			}
@@ -103,7 +114,31 @@ public class NELLUser {
 	public static List<NELLUser> loadUsers(int nuser) {
 
 		System.out.println("********************************************");
-		System.out.println("start load users from dummy data");
+		System.out.println("start load users from real data");
+		
+		//load the null user list first
+		
+		List<String> nullUsers = new ArrayList<String>();
+		File a = new File("NULLUsers/nulluserlist");
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(a));
+			while(true){
+
+				String c = br.readLine();
+				if(c == null){
+					break;
+				}else{
+					nullUsers.add(c);
+				}
+				
+			}
+			
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		System.out.println("the number of null user is " + nullUsers.size());
 
 		List<NELLUser> userSet = new ArrayList<NELLUser>();
 
@@ -111,37 +146,83 @@ public class NELLUser {
 
 		//List<Long> followers = tagent.getFollowersIds();
 		List<Long> followers = loadFollowIds();
-		
-		followers.clear();
-		
-		followers.add((long)158414847);
-		
-		followers.add((long)20416406);
-		
-		followers.add((long)759251);
-		followers.add((long)1367531);
-		
-		//followers.add((long)47887649);
-		
-		followers.add((long)155659213);
+//
+//		followers.clear();
+//		
+//		followers.add((long)158414847);
+//		
+//		followers.add((long)20416406);
+//		
+//		followers.add((long)759251);
+//		followers.add((long)1367531);
+//
+//		followers.add((long)155659213);
 		
 		System.out.println("the total number of followers in nell is " + followers.size());
-
+		//followers.add((long)47887649);
+		String dir = "Twitter_Id_UserName/";
+		//String tent = dir + word;
+		//FreebaseAgent fagent = FreebaseAgent.getInstance();
+		//File f = new File(tent);
+		
 		int count = 0;
 		for (Long id : followers) {
 			count++;
-			if (count > nuser) {
-				break;
+			if(count<=1700){
+				//continue;
+			}
+			
+			if (count > 500) {
+				//break;
 			}
 			// for each user, find name, tweets
 			NELLUser u = new NELLUser();
-			u.setName(tagent.getName(id));
-			u.setTweets(retrieveTweetsForUser(id, tagent.getName(id)));
+			
+			String tent = dir + id;
+			File f = new File(tent);
+
+			String content = "";
+			String name = "";
+			if (f.exists()) {
+				// we already have it in the system
+				//System.out.println("For word: " + word + ", load from file");
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(f));
+					content = br.readLine();
+					name = content;
+					br.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				name = tagent.getName(id);
+				
+				try {
+					BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+					bw.append(name);
+					bw.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			//name = tagent.getName(id); 
+
+			if(name == null || name.equals("") || name.trim().length() == 0){
+				continue;
+			}
+			
+			if(nullUsers.contains(name)){
+				continue;
+			}
+			
+			u.setName(name);
+			u.setTweets(retrieveTweetsForUser(id, name));
 			System.out.println("load tweets for user " + u.getName());
 			userSet.add(u);
 		}
 
-		System.out.println("finish load users from dummy data");
+		System.out.println("finish load users from real data");
 		System.out.println("users are successfully loaded into the system");
 		System.out.println("The number of users in the system is "
 				+ userSet.size());
@@ -173,6 +254,130 @@ public class NELLUser {
 		// userSet.add(u3);
 		//
 
+		return userSet;
+	}
+	public static List<NELLUser> loadUsers_exp2(int nuser) {
+
+		System.out.println("********************************************");
+		System.out.println("start load users from dummy data");
+		
+	//load the null user list first
+		
+		List<String> nullUsers = new ArrayList<String>();
+		File a = new File("NULLUsers/nulluserlist");
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(a));
+			while(true){
+
+				String c = br.readLine();
+				if(c == null){
+					break;
+				}else{
+					nullUsers.add(c);
+				}
+				
+			}
+			
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+		System.out.println("the number of null user is " + nullUsers.size());
+		
+		List<String> e1aUsers = new ArrayList<String>();
+		String b = "Exp1A/";
+		File fb = new File(b);
+		for (File f : fb.listFiles()) {
+			e1aUsers.add(f.getName());
+		}
+		System.out.println("the total number of user in e1a is " + e1aUsers.size());
+
+		List<String> e1bUsers = new ArrayList<String>();
+		String c = "Exp1B/";
+		File fc = new File(c);
+		for (File f : fc.listFiles()) {
+			e1bUsers.add(f.getName());
+		}
+		System.out.println("the total number of user in e1b is " + e1bUsers.size());
+	
+		List<NELLUser> userSet = new ArrayList<NELLUser>();
+
+		TwitterAgent tagent = TwitterAgent.getInstance();
+
+		//List<Long> followers = tagent.getFollowersIds();
+		List<Long> followers = loadFollowIds();
+		
+		System.out.println("the total number of followers in nell is " + followers.size());
+		//followers.add((long)47887649);
+		String dir = "Twitter_Id_UserName/";
+		//String tent = dir + word;
+		//FreebaseAgent fagent = FreebaseAgent.getInstance();
+		//File f = new File(tent);
+		Collections.shuffle(followers);
+		int t = 113;
+		
+		int count = 0;
+		for (Long id : followers) {
+			if(count >= t){
+				break;
+			}
+			
+			// for each user, find name, tweets
+			NELLUser u = new NELLUser();
+			
+			String tent = dir + id;
+			File f = new File(tent);
+
+			String content = "";
+			String name = "";
+			if (f.exists()) {
+				// we already have it in the system
+				//System.out.println("For word: " + word + ", load from file");
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(f));
+					content = br.readLine();
+					name = content;
+					br.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				name = tagent.getName(id);
+				
+				try {
+					BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+					bw.append(name);
+					bw.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			//name = tagent.getName(id); 
+
+			if(name == null || name.equals("") || name.trim().length() == 0){
+				continue;
+			}
+			
+			if(nullUsers.contains(name) || e1aUsers.contains(name) || e1bUsers.contains(name)){
+				continue;
+			}
+			
+			u.setName(name);
+			u.setTweets(retrieveTweetsForUser(id, name));
+			System.out.println("load tweets for user " + u.getName());
+			userSet.add(u);
+			count++;
+		}
+
+		System.out.println("finish load users from dummy data");
+		System.out.println("users are successfully loaded into the system");
+		System.out.println("The number of users in the system is "
+				+ userSet.size());
+
+	
 		return userSet;
 	}
 
@@ -224,9 +429,43 @@ public class NELLUser {
 		//
 	}
 
-	public static List<String> findUserTopics(NELLUser user) {
-
+	public static List<String> findUserTopics(NELLUser user) {	
+		
 		List<String> topics = new ArrayList<String>();
+
+		String dir = "UserTopics/";
+		String tent = dir + user.getName();
+		String name = user.getName();
+		
+		File f = new File(tent);
+
+		String content = "";
+		
+		if (f.exists()) {
+			// we already have it in the system
+			System.out.println("For user: " + name + ", load from file");
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(f));
+				while (true) {
+
+					content = br.readLine();
+					if (content == null) {
+						break;
+					} else {
+						topics.add(content);
+						allTopics.add(content);
+					}
+
+				}
+
+				br.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return topics;
+		}
+
 
 		HashMap<String, Integer> nouns = new HashMap<String, Integer>();
 
@@ -295,6 +534,7 @@ public class NELLUser {
 				Iterator itr = types.iterator();
 				while (itr.hasNext()) {
 					String p = (String) itr.next();
+					//allTopics.add(p);
 					if (commonTopics.contains(p)) {
 						continue;
 					}
@@ -395,8 +635,24 @@ public class NELLUser {
 			}
 
 		}
-		System.out.println("finish compute top10 types");
+		System.out.println("finish compute top " + numOfTypesWant + " types");
 
+		//write back to file
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+			for (String o : topics) {
+				bw.append(o + "\n");
+				
+				if(o.length() == 1 || o.contains("1") || o.contains("?")){
+					continue;
+				}
+				allTopics.add(o);
+			}
+
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return topics;
 	}
 
@@ -434,7 +690,7 @@ public class NELLUser {
 		} else {
 			// we have to query from the web
 			System.out.println("For user: " + name + ", query from web");
-			tweets = tagent.retrieveFromAUser(id);
+			tweets = tagent.retrieveFromAUser(id, name);
 			// we also have to store it to the folder
 			System.out.println("For user: " + name
 					+ ", store the result to file");
@@ -446,7 +702,11 @@ public class NELLUser {
 
 				bw.close();
 			} catch (Exception e) {
+				System.out.println("user " + name + " is bad");
 				e.printStackTrace();
+				System.exit(1);
+				
+				
 			}
 		}
 		// now we have the string of content replied from the freebase server
@@ -491,4 +751,12 @@ public class NELLUser {
 		return fagent.getAllTypes(content);
 	}
 
+	
+	
+	public HashMap<String, List<String>> summaryUsers(){
+		
+		
+		return null;
+		
+	}
 }

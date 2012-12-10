@@ -1,5 +1,10 @@
 package Twitter;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,14 +51,24 @@ public class TwitterAgent {
 
 		System.out.println("authorize!");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
+//		cb.setDebugEnabled(true)
+//				.setOAuthConsumerKey("pU7fedemNqtJLbFI5DUXxQ")
+//				.setOAuthConsumerSecret(
+//						"IFCGEYvGTfVrnPqZ9U13BpQiyOXVxXJQZEHq5ww9E")
+//				.setOAuthAccessToken(
+//						"92151054-E6bDzKb6JxhM881kiHTx2sQGOc5NQT02e0ffpHR98")
+//				.setOAuthAccessTokenSecret(
+//						"eQB2QeIRBLs0GmEE8AVwWq9Cp1kASppqziN3HX7aR58");
+		
 		cb.setDebugEnabled(true)
-				.setOAuthConsumerKey("pU7fedemNqtJLbFI5DUXxQ")
-				.setOAuthConsumerSecret(
-						"IFCGEYvGTfVrnPqZ9U13BpQiyOXVxXJQZEHq5ww9E")
-				.setOAuthAccessToken(
-						"92151054-E6bDzKb6JxhM881kiHTx2sQGOc5NQT02e0ffpHR98")
-				.setOAuthAccessTokenSecret(
-						"eQB2QeIRBLs0GmEE8AVwWq9Cp1kASppqziN3HX7aR58");
+		.setOAuthConsumerKey("kszNJmvwgnLDWtCLgfF8w")
+		.setOAuthConsumerSecret(
+				"vHO5WWmxuw8xGK6z48iZxaRXoq59bfycmDU362uoow0")
+		.setOAuthAccessToken(
+				"128346877-F8Khjyk1bRQji65sCcnAvg9ciL4danAS7UCiRWfM")
+		.setOAuthAccessTokenSecret(
+				"paEM9nPyGMbQsVT18YMgl7kW4XtRdouz0WYsgHLuQ");
+
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		return tf.getInstance();
 
@@ -85,9 +100,9 @@ public class TwitterAgent {
 	public static void directMessage(String recipientId, String msg)
 			throws TwitterException {
 
-		recipientId = "sharqwy";
-
-		msg = "Hello, this is tianle huang";
+//		recipientId = "sharqwy";
+//
+//		msg = "Hello, this is tianle huang";
 		DirectMessage message = twitter.sendDirectMessage(recipientId, msg);
 		System.out.println("Direct message successfully sent to "
 				+ message.getRecipientScreenName());
@@ -96,18 +111,33 @@ public class TwitterAgent {
 	public static void getDirect() throws TwitterException {
 
 		// String senderId = "sharqwy";
+		String dir = "Results/";
+
 
 		List<DirectMessage> message = twitter.getDirectMessages();
 
 		for (DirectMessage dm : message) {
 
+			String user = dm.getSender().getName();
+			String content = dm.getText();
 			System.out
 					.println("**********************************************");
 
-			System.out.println(dm.getText() + "," + dm.getSender().getName());
+			System.out.println("from user " + user  + "," + content + ", at " + dm.getCreatedAt());
 			System.out
 					.println("**********************************************");
 
+			File f = new File(dir+user);
+			
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+				bw.append(content+"\n");
+				bw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 	}
@@ -197,11 +227,40 @@ public class TwitterAgent {
 		return name;
 	}
 
-	public static List<String> retrieveFromAUser(long id) {
+	public static List<String> retrieveFromAUser(long id, String user) {
 		System.out.println("Retrieving tweets...");
 		List<String> tweets = new ArrayList<String>();
 		try {
-			String user = twitter.showUser(id).getScreenName();
+//			String dir = "Twitter_Id_UserName/";
+//			String tent = dir + id;
+//			File f = new File(tent);
+//
+//			String content = "";
+//			String user = "";
+//			if (f.exists()) {
+//				// we already have it in the system
+//				//System.out.println("For word: " + word + ", load from file");
+//				try {
+//					BufferedReader br = new BufferedReader(new FileReader(f));
+//					content = br.readLine();
+//					user = content;
+//					br.close();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			} else {
+//				user = instance.getName(id);
+//				
+//				try {
+//					BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+//					bw.append(user);
+//					bw.close();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			
+			//user = twitter.showUser(id).getScreenName();
 			System.out.println("The current user is " + user);
 			
 			
@@ -211,23 +270,33 @@ public class TwitterAgent {
 
 			QueryResult result = twitter.search(query);
 
-			System.out.println("Count : " + result.getTweets().size());
+			List<Tweet> lts = result.getTweets();
+			System.out.println("Count : " + lts.size());
 
-			for (Tweet tweet : result.getTweets()) {
+			for (Tweet tweet : lts) {
 
-				System.out.println("text : " + tweet.getText());
-				tweets.add(tweet.getText());
+				String c = tweet.getText();
+				System.out.println("text : " + c);
+				tweets.add(c);
 
 			}
 
 		} catch (TwitterException e) {
 
 			e.printStackTrace();
+			System.out.println("user " + user + " is bad");
+			//e.printStackTrace();
+			System.exit(1);
+			
 
 		}
 
 		System.out.println("done! ");
 		return tweets;
+	}
+	
+	public static void followUser(String u) throws TwitterException{
+		twitter.createFriendship(u);
 	}
 
 	public static void getFollowersTest() {
@@ -295,6 +364,23 @@ public class TwitterAgent {
 	}
 	
 
+	public static void getit() throws TwitterException{
+		
+		List<DirectMessage> message = twitter.getDirectMessages();
+
+		for (DirectMessage dm : message) {
+
+			String user = dm.getSender().getName();
+			String content = dm.getText();
+			System.out
+					.println("**********************************************");
+
+			System.out.println("from user " + user  + "," + content + ", at " + dm.getCreatedAt());
+			System.out
+					.println("**********************************************");
+		}
+		
+	}
 	public static void main(String[] args) {
 
 		TwitterAgent r = TwitterAgent.getInstance();
@@ -317,7 +403,9 @@ public class TwitterAgent {
 			
 			//r.retrieveFromAUser(242922283);
 			
-			r.te();
+			//r.te();
+			r.getit();
+		
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

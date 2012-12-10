@@ -1,0 +1,4 @@
+RT @climagic: awk '{ print substr($0, index($0,$3)) }' mail.log # Print all from 3rd field to end of line. Very useful for log parsing! Thx @sromeroi
+It is December. The AIR CONDITIONER just kicked in.
+186 mg/dl, 7 units insulin, 3 graham crackers + peanut butter
+One day I want to steal someone's status verbatim and see if they notice.

@@ -1,0 +1,100 @@
+beer o'clock!
+@chortlehoort just logged the bug with my pm, so i’ll get it sorted tomorrow or on the weekend
+@chortlehoort there is a regression for posts & put; if you want to file an issue that’s 1 way to be sure it’s solved by monday ;)
+@chortlehoort that should be passed through; i’ll take a look at it when i get home
+@chortlehoort ^5
+finding the max mysql queries through node running on osx is a real pain, 25k? nope… 25k go in, but it times out
+RT @hshoff: "I wrote it in Scala for job security"
+RT @njoyard: ist.js DOM templating engine v0.5.5 released (bugfixes, event handlers) and rewrote documentation http://t.co/coJeEq33
+RT @MikeMcPickles: Bill C-45, omnibus v2 passed.  As usual, not a word changed.  Rule by decree will continue until democracy is eradicated. #cdnpoli
+just pushed out a minor update for abaaso, 3.2.16 fixes 2 small errors in element.serialize(); found by a coworker (love editorial work)
+[abaaso] https://t.co/WvzqJ5q7 Jason Mulligan - 3 commits
+[abaaso] https://t.co/Yv0y3LnE Jason Mulligan - 1 commits
+RT @KeithMBuchanan: IE8 is the bane of my existence... #ie
+RT @shaver: @brianking “HTML5”, whatever you choose that to mean, is not the problem as much as webviews are, in many ways
+seems batching sets of 50k inserts into mysql with a goal of 3m is an ‘ok’ way to do it from #nodejs for (local) integration testing
+@beaumartinez nice, i’ll pass that info around the office, thanks
+@beaumartinez what’s that do? sounds useful
+was wondering why my “test” was failing, and it was just ‘case node was so fast and i was thinking in a sync fashion #async
+@feyhops that kangaroo looks stoned!
+@StrictlyGeeky is there even enough fab plants in the USA to do that? seems ambitious
+@TheTweetOfGod you lie God!
+@StrictlyGeeky lol
+demo serialize() which landed in #abaaso 3.2.15 last night; http://t.co/11cs0OD8
+[abaaso] https://t.co/Yv0y3LnE Jason Mulligan - 1 commits
+@feyhops no (use it daily)
+[abaaso] https://t.co/WvzqJ5q7 Jason Mulligan - 4 commits
+OH: “the moustache goes the claws come out!”
+i just noticed how dirty my magic mouse is #ew
+@ajs318 you can half 1/2 a cookie! ;)
+even though it’s hot water & syrup, and not even close to a real latte...
+wish there was a starbucks near by, would love a chai latte
+commit msg of the day “Making it DRY'r, misc OCD rearrangment”
+[abaaso] https://t.co/Yv0y3LnE Jason Mulligan - 1 commits
+@KeithMBuchanan it does
+@StrictlyGeeky i hate the descriptions on my code :/
+RT @3rdEden: Released a new #nodejs module: creditcard . Some handy utilities for parsing, validating and using credit card details https://t.co/HyyNA3Lj
+who’s putting my code on softpedia?
+RT @rickygervais: Of my 3.6 million followers, you are my absolute favourite. Please don't tell anyone. I don't want to hurt those other losers' feelings.
+tool - opiate on the playlist ftw!
+RT @ifenn: At what point did mobile become different enough to have its own UX designer? And does it really justify one?
+using nodeunit for integration tests with api consumer / db is … interesting
+RT @codepo8: Man of steel - Canada edition http://t.co/E2JvZ0td
+just noticed lower case “f” with Ubuntu Mono is pretty stylish #nice
+in the office an hour early… i should grow a crunch beard
+RT @abaaso: #abaaso 3.2.14 is out featuring fixes & call stack optimization for DataLists! #JavaScript #REST #API #nodejs http://t.co/qD7SQiZ8
+[abaaso] https://t.co/WvzqJ5q7 Jason Mulligan - 2 commits
+[abaaso] https://t.co/WvzqJ5q7 Jason Mulligan - 5 commits
+[abaaso] https://t.co/Yv0y3LnE Jason Mulligan - 1 commits
+@ChupaCabraThing hah got penis on the mind? it’s ok big guy
+@ChupaCabraThing @JimGaffigan bcb* f’n autocorrect in osx … bacon cheese burger
+@ChupaCabraThing @JimGaffigan hah, i love a bcd & pint of lager any day; but you gotta learn to love tofu; can’t sustain population on beef
+@JimGaffigan the tofu
+what do you get out of IE with Math.ceil(2/2) or Math.ceil(1/2)? i’m not sure but it’s not a “number”
+oh noes, my abaaso repo is on the partition github has taken down for repair
+@dscape resolves for me
+RT @CBCOttawa: UPDATE | Jetta drives through sound barrier, rests in backyard, with PHOTOS http://t.co/I6bzA1Ru #ottnews #ottawa #otttraffic
+@travisci just realized that i wasn’t; that icon and placement doesn’t scream “useful anchors hidden here”
+@travisci https://t.co/nAFNxI8B no there isn’t
+@StrictlyGeeky hah i love that counter point
+@travisci how do you trigger a new build without a new commit? one of your VMs failed and now the project badge says “failed” for no reason
+@terraflubb neat, no wonder it looks good
+@nuforce_usa yup, paradigm monitor 3 v3, cayin cdt-15a, apple tv2, cable box; retired my cayin mt-35 from living room duty
+RT @pedramp: turtle.io The easy web server for node.js http://t.co/U0355gUK #nodejs #js
+@beaumartinez and align all :’s
+RT @beaumartinez: My OCD just can't handle JSON not having its keys sorted
+@3pointross i bet pixelmator does it easier than photoshop
+@ALL_CAPS dac/amp don’t speak hdmi! i’ll go optical if it means i can get an A weighted output without tubes
+@tonyhawk that photo should be in the history books to sum up the 80s
+so… do i order from monoprice or buy local and pay 20x as much? #decisions
+@feyhops texture never hurt a pic
+@feyhops looks fine to me; i get that in the bokeh when using a tiny/heavy smart sharpen
+can’t find any toslink cables… utterly shocking since i used to have 5-10
+@feyhops did you push a stop or two by accident?
+@feyhops hows the histogram?
+hope i kept some spare toslink cables in storage
+@3pointross path tool + tablet = win
+New amp arrived! #nuforce http://t.co/emdbEKs4
+oh god, what have i done with “cp -ap $dir $dir2” which is the same repo on diff branches #cpu #death
+@dscape @nodejitsu i need to get that implemented at @filetrek!
+RT @dscape: This is how we make decisions at @Nodejitsu — http://t.co/oPz7hKbO
+looking to get an automotive gps, any recommendations? #botbait #noreally
+@codepo8 doesn’t work with “ottawa, canada” & “toronto, canada”
+@Aranhia dunno if i’d be on board; it’d be wild if the ice melts and releases a microbe that finds us tasty or ideal for reproduction
+RT @JohnFugelsang: In the last 30 yrs the top 1%'s wages have gone up 375% & middle class wages have gone up 40%.  Next on FOX, Gays are bad.
+@StrictlyGeeky i did as well, briefly; then i looked at the price of slim burners
+@StrictlyGeeky no it shouldn’t; cf media isn’t an option cause it’s dead; let optical die on a computer, it’s from the 80s ffs
+I should write a code-complete st2 module for abaaso syntax
+turtle.io can answer requests in a non-blocking way thanks to streams! #nodejs #JavaScript #webserver http://t.co/30qxBGin
+switched my st2 font to Ubuntu Mono yesterday (been a year+ since using it)… it renders so fat! my text needs a diet or something
+@chrismatthieu i <3 streams, i love piping ‘tween a read & write stream; or using util.pump() when needed (pauses are possible)
+fu Messages! i just typed out a great msg and it went no where ‘cause the person is offline… queue that shit through gmail properly! #xmpp
+wow, astraweb actually killed my account; guess they fixed their billing black hole
+2 weeks on joyent has been quite lovely compared the other vps host i have
+@StrictlyGeeky make something in node.js … something you can do in php already
+abaaso 3.2.12 - Last patch before Christmas - Yesterday I released 3.2.12 to Github, NPM, Jam & the CDN.... http://t.co/vz2cEfCf
+my work calendar looks like clown puke for this month
+water change & chemistry work done #aquarium
+Couldn’t sleep, so I just refactored abaaso’s data.find() (for a coworker); now it’s super easy to get a subset of the data set
+[abaaso] https://t.co/WvzqJ5q7 Jason Mulligan - 3 commits
+[abaaso] https://t.co/Yv0y3LnE Jason Mulligan - 1 commits
