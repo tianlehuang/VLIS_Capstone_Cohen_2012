@@ -86,5 +86,7 @@
 	<classpathentry kind="lib" path="/Users/tianlehuang/Documents/workspace/Capstone/Jars/JDBCTutorial/lib/JDBCTutorial.jar"/>
 	<classpathentry kind="lib" path="/Users/tianlehuang/Documents/workspace/Capstone/Jars/lingpipe-4.1.0 2/lingpipe-4.1.0.jar"/>
 	<classpathentry kind="lib" path="/Users/tianlehuang/Documents/workspace/Capstone/Jars/lingpipe-4.1.0 2/lib/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="/Users/tianlehuang/Documents/workspace/Capstone/Jars/twitter4j-2.2.6/twitter4j-core/twitter4j-core-2.2.6-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/tianlehuang/Documents/workspace/Capstone/Jars/twitter4j-2.2.6/twitter4j-core/twitter4j-core-2.2.6-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

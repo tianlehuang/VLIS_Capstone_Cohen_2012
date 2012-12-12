@@ -5,11 +5,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import twitter4j.DirectMessage;
 import twitter4j.IDs;
+import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -52,14 +56,24 @@ public class TwitterAgent {
 		System.out.println("authorize!");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 
+//		cb.setDebugEnabled(true)
+//		.setOAuthConsumerKey("kszNJmvwgnLDWtCLgfF8w")
+//		.setOAuthConsumerSecret(
+//				"vHO5WWmxuw8xGK6z48iZxaRXoq59bfycmDU362uoow0")
+//		.setOAuthAccessToken(
+//				"128346877-F8Khjyk1bRQji65sCcnAvg9ciL4danAS7UCiRWfM")
+//		.setOAuthAccessTokenSecret(
+//				"paEM9nPyGMbQsVT18YMgl7kW4XtRdouz0WYsgHLuQ");
+
+
 		cb.setDebugEnabled(true)
-		.setOAuthConsumerKey("kszNJmvwgnLDWtCLgfF8w")
+		.setOAuthConsumerKey("E44XlZ7mn5kGhm2nYjSnpA")
 		.setOAuthConsumerSecret(
-				"vHO5WWmxuw8xGK6z48iZxaRXoq59bfycmDU362uoow0")
+				"0DjAvaJ4vZFc5G8rrkZikG2IK8zcJGapXUWhMJBScgM")
 		.setOAuthAccessToken(
-				"128346877-F8Khjyk1bRQji65sCcnAvg9ciL4danAS7UCiRWfM")
+				"128346877-8ODLjVVu5IrA4mRN0N5bIaXPNp7wLITQCxZ1grNX")
 		.setOAuthAccessTokenSecret(
-				"paEM9nPyGMbQsVT18YMgl7kW4XtRdouz0WYsgHLuQ");
+				"kweRalb329TJ1NT6vFFfsiU7wx9FzLS2PzVNvnj31D0");
 
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		return tf.getInstance();
@@ -104,14 +118,34 @@ public class TwitterAgent {
 
 		// String senderId = "sharqwy";
 		String dir = "Results/";
+		Paging paging = new Paging(1, 300);
 
 
-		List<DirectMessage> message = twitter.getDirectMessages();
+		List<DirectMessage> message = twitter.getDirectMessages(paging);
+		
+		//twitter.getDirectMessages();
+		String toDate;
+	    toDate = "12/7/2012";
+	    DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+	    Date toDt = null;
+	    try {
+			toDt = df.parse(toDate);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		for (DirectMessage dm : message) {
 
-			String user = dm.getSender().getName();
+			
+			//String user = dm.getSender().getName();
+			String user = dm.getSender().getScreenName();
 			String content = dm.getText();
+			Date d = dm.getCreatedAt();
+			
+			if(!d.after(toDt)){
+				continue;
+			}
 			System.out
 					.println("**********************************************");
 
@@ -357,12 +391,15 @@ public class TwitterAgent {
 	
 
 	public static void getit() throws TwitterException{
-		
-		List<DirectMessage> message = twitter.getDirectMessages();
+		Paging paging = new Paging(1, 200);
+
+		List<DirectMessage> message = twitter.getDirectMessages(paging);
 
 		for (DirectMessage dm : message) {
 
 			String user = dm.getSender().getName();
+			
+			dm.getSender().getScreenName();
 			String content = dm.getText();
 			System.out
 					.println("**********************************************");

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import twitter4j.TwitterException;
 
+import Experiments.Exp;
 import Matcher.Matching;
 import Query.NELLQuery;
 import SVDSolver.Result;
@@ -25,58 +26,49 @@ import Tools.Pair;
 import Twitter.TwitterAgent;
 import User.NELLUser;
 
+//driver for the whole system
 public class WholeSystem {
 
+	//it starts the pipeline
 	public static void execute() {
 
-		// TwitterAgent tagent = TwitterAgent.getInstance();
-
-		// List<NELLQuery> querySet = NELLQuery.loadQuerySet();
-		//
-		// NELLQuery.classify(querySet);
-
 		int nuser = 300;
-		// List<NELLUser> userSet = NELLUser.loadUsers(nuser);
-		List<NELLUser> userSet = NELLUser.loadUsers_exp2(nuser);
-		try {
-			Thread.currentThread().sleep(10 * 1000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//load users into system
+		List<NELLUser> userSet = NELLUser.loadUsers(nuser);
+		//List<NELLUser> userSet = NELLUser.loadUsers_exp2(nuser);
+		//classify users by figuring out their interested topics
 		NELLUser.classify(userSet);
 
-		// String[] topics = new String[] { "human", "interface", "computer",
-		// "user", "system", "response", "time", "EPS", "survey", "trees",
-		// "graph", "minors" };
-		// String[] topics = new String[]{"education", "computer", "book",
-		// "music", "tv", "story", "business"};
-		// String[] topics = (String[])NELLUser.allTopics.toArray();
-
+		//union of all the top10 topics
 		String[] topics = new String[NELLUser.allTopics.size()];
 
 		Iterator itrt = NELLUser.allTopics.iterator();
 		int index = 0;
 		while (itrt.hasNext()) {
-
 			topics[index] = (String) itrt.next();
 			index++;
 		}
 
 		long start = System.currentTimeMillis() / 1000000;
-		// Result r = SVDSolver.analyze(topics);
-		Result r = SVDSolver.analyze_exp2(topics, userSet);
+		//start svd solver to decompose matrix
+		Result r = SVDSolver.analyze(topics);
+		//Result r = SVDSolver.analyze_exp2(topics, userSet);
 		long end = System.currentTimeMillis() / 1000000;
 		System.out.println("it takes " + (end - start));
+		
+		//load query set into the system
 		List<NELLQuery> querySet = NELLQuery.loadQuerySet();
 
+		//match users with queries
 		Matching.match(querySet, userSet, r);
-
+		printStat(userSet);
+	
+	}
+	
+	public static void printStat(List<NELLUser> userSet){
 		// statitcs about types
-
 		Map<String, Integer> count = new HashMap<String, Integer>();
-
 		for (int i = 0; i < userSet.size(); i++) {
-
 			// get its type set
 			for (String t : userSet.get(i).getTopics()) {
 				if (count.containsKey(t)) {
@@ -98,36 +90,24 @@ public class WholeSystem {
 
 			p.add(h);
 		}
-
 		Collections.sort(p);
 
-		// for (int i = 0; i < p.size(); i++) {
-		// System.out.println("type " + p.get(i).word + " has count "
-		// + (p.get(i).count * 1.0 / userSet.size()));
-		// }
-
-		// Matching.match(querySet, userSet);
-		//
-		// try {
-		// tagent.publish(querySet);
-		//
-		// tagent.collect(userSet);
-		// } catch (TwitterException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
+		
 	}
 
-	
 	public static void main(String[] args) {
 
 		WholeSystem s = new WholeSystem();
 
+		Exp e = new Exp();
+
+		//e.collect();
+
+		e.analyze2();
 		// s.execute();
 
 		// s.broadCast("Exp2B");
-		//s.collect();
+		// s.collect();
 		// s.execute();
 		// s.stat();
 

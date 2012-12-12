@@ -496,14 +496,11 @@ public class Exp {
 
 			if (usersIn1A.contains(user)) {
 				p++;
-			}
-			if (usersIn1B.contains(user)) {
+			}else if (usersIn1B.contains(user)) {
 				q++;
-			}
-			if (usersIn2A.contains(user)) {
+			}else if (usersIn2A.contains(user)) {
 				r++;
-			}
-			if (usersIn2B.contains(user)) {
+			}else if (usersIn2B.contains(user)) {
 				s++;
 			}
 
